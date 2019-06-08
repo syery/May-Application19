@@ -26,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationManager locationManager;
     private GoogleMap mMap;
+    private Location mLocation;
     private Handler handler1;               // ハンドラー
     private Timer timer1;                   // タイマー
     private int count1;                     // カウント用
@@ -66,13 +67,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 handler1.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("aaaa",count1 + "回");
+                        //緯度経度
+                        if (mLocation != null) {
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+                        }
                     }
                 });
                 //カウントアップ
                 count1 += 1;
             }
-        }, 1000, 10000);
+        }, 1000, 5000);
+
+
+
+
     }
 
 
@@ -83,8 +91,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location){
-        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
+      //  mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
         //Toast.makeText(MapsActivity.this,"場所が変わった",Toast.LENGTH_SHORT).show();
+        mLocation = location;
     }
 
     @Override
@@ -112,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng aomori = new LatLng(40.783084,140.781492);
-        mMap.addMarker(new MarkerOptions().position(aomori).title("Marker in 青森大学"));
+     //   mMap.addMarker(new MarkerOptions().position(aomori).title("Marker in 青森大学"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(aomori,17));
     }
 }
