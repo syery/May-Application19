@@ -50,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location){
         mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
-        //Toast.makeText(MapsActivity.this,"場所が変わったっつってんじゃん",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MapsActivity.this,"場所が変わった",Toast.LENGTH_SHORT).show();
     }
 
     @Override
