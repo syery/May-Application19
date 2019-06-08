@@ -5,9 +5,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,10 +19,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private LocationManager locationManager;
     private GoogleMap mMap;
+    private Handler handler1;               // ハンドラー
+    private Timer timer1;                   // タイマー
+    private int count1;                     // カウント用
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +48,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,this);
+
+        //タイマーを新規生成
+        timer1 = new Timer();
+        //ハンドラーを新規生成
+        handler1 = new Handler();
+
+        //カウンターを初期化
+        count1 = 0;
+
+        //タイマーに直接スケジュール(1秒後に1秒間隔の処理を開始)を追加して実行
+        timer1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                //直接だとエラーになるのでハンドラーを経由して画面表示を変更する
+                handler1.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("aaaa",count1 + "回");
+                    }
+                });
+                //カウントアップ
+                count1 += 1;
+            }
+        }, 1000, 10000);
     }
+
 
     @Override
     public void onStatusChanged(String provider, int status,Bundle extras){
