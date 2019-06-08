@@ -30,6 +30,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Handler handler1;               // ハンドラー
     private Timer timer1;                   // タイマー
     private int count1;                     // カウント用
+    private Location mLocation1,mLocation2,mLocation3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,this);
 
+
         //タイマーを新規生成
         timer1 = new Timer();
         //ハンドラーを新規生成
@@ -67,9 +69,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 handler1.post(new Runnable() {
                     @Override
                     public void run() {
-                        //緯度経度
                         if (mLocation != null) {
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+                            mLocation1 = mLocation2;
+                            mLocation2 = mLocation3;
+                            mLocation3 = mLocation;
+
+                            if (mLocation1 != null && mLocation2 != null && mLocation3 != null) {
+                                //mMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+                            }
                         }
                     }
                 });
@@ -79,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }, 1000, 5000);
 
 
-
+   
 
     }
 
